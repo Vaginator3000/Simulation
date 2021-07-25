@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 var RED_MOBS_AMOUNT = 10
 var BLUE_MOBS_AMOUNT = 10
 
+val TIME_TICK: Long = 200
+
 class MainActivity : AppCompatActivity() {
 
     val basesDrawer by lazy {
@@ -29,8 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         container.setOnClickListener {
-            basesDrawer.drawRedBaseAndMiddleLine()
-            basesDrawer.drawBlueBase()
+            basesDrawer.drawBasesAndStartLifeCycle()
 
             mobsDrawer.startMobs()
 

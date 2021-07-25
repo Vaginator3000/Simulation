@@ -9,9 +9,9 @@ import com.template.simulation.models.Coordinate
 import kotlin.random.Random
 
 fun checkCoordInBorder(coordinate: Coordinate): Boolean {
-    if (coordinate.left > getScreenWidth())
+    if (coordinate.left < 0 || coordinate.left > getScreenWidth())
         return false
-    if (coordinate.top > getScreenHeight())
+    if (coordinate.top < 0 || coordinate.top > getScreenHeight())
         return false
     return true
 }

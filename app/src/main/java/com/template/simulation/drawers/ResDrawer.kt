@@ -18,7 +18,7 @@ class ResDrawer(val container: FrameLayout, val basesDrawer: BasesDrawer) {
     fun startResCreate() {
         Thread {
             while (true) {
-                if (isChanceBiggerThanPercent(20))
+                if (isChanceBiggerThanPercent(30))
                     createRes()
                 sleep(1000)
             }
@@ -35,25 +35,31 @@ class ResDrawer(val container: FrameLayout, val basesDrawer: BasesDrawer) {
         return allRes.firstOrNull { it.view == resView }
     }
 
-    private fun createRes() {
+    fun createRes(resCoord: Coordinate? = null, size: Int = 0) {
         val resView = ImageView(container.context)
         resView.setImageResource(R.drawable.mob)
         resView.setColorFilter(container.context.resources.getColor(R.color.res_color))
         resView.layoutParams = FrameLayout.LayoutParams(RES_SIZE, RES_SIZE)
 
         var topLeftResCoord: Coordinate
-        do {
-            val newLeftCoord = Random.nextInt(getScreenWidth())
-            val newTopCoord = Random.nextInt(getScreenHeight())
-            topLeftResCoord = Coordinate(newLeftCoord, newTopCoord)
-            val bottomRightResCoord = Coordinate(newLeftCoord + RES_SIZE,newTopCoord + RES_SIZE)
-        } while (basesDrawer.checkCoordIsABase(topLeftResCoord) || basesDrawer.checkCoordIsABase(bottomRightResCoord))
+        if (resCoord == null) {
+            do {
+                val newLeftCoord = Random.nextInt(getScreenWidth())
+                val newTopCoord = Random.nextInt(getScreenHeight())
+                topLeftResCoord = Coordinate(newLeftCoord, newTopCoord)
+                val bottomRightResCoord = Coordinate(newLeftCoord + RES_SIZE, newTopCoord + RES_SIZE)
+            } while (basesDrawer.checkCoordIsABase(topLeftResCoord) || basesDrawer.checkCoordIsABase(bottomRightResCoord))
+        }
+        else {
+            topLeftResCoord = resCoord
+        }
 
         (resView.layoutParams as FrameLayout.LayoutParams).topMargin = topLeftResCoord.top
         (resView.layoutParams as FrameLayout.LayoutParams).leftMargin = topLeftResCoord.left
 
         allRes.add(Resource(
-                size = Random.nextInt(10) + 1,
+                size = if (size == 0) Random.nextInt(10) + 1
+                        else size,
                 view = resView
         ))
 
